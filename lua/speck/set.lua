@@ -19,7 +19,7 @@ vim.opt.wrap = false
 -- Turn off backup files but setup UndoTree plugin for infinite undo
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("LOCALAPPDATA") .. "/.vim/undodir"
+vim.opt.undodir = (os.getenv('HOME') or os.getenv('LOCALAPPDATA')) .. '/.vim/undodir'
 vim.opt.undofile = true
 
 -- Highlight while typing search term but don't keep highlight turned on
