@@ -26,6 +26,8 @@ return require('packer').startup(function(use)
   use('gpanders/editorconfig.nvim')
   -- Treesitter for syntax highlighting
   use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+  -- Treesitter context, to always show what scope you're in
+  use('nvim-treesitter/nvim-treesitter-context')
   -- Harpoon for marking files in a list and switching between them
   use('theprimeagen/harpoon')
   -- View and manage the undo tree, allows branching-like behavior with changes
