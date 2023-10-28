@@ -60,4 +60,24 @@ return require('packer').startup(function(use)
 		  {'rafamadriz/friendly-snippets'},
 	  }
   }
+
+  -- Improve VIM's default UI
+  use('stevearc/dressing.nvim')
+
+  -- Notifications UI
+  use('rcarriga/nvim-notify')
+
+  -- Task Runner
+  use {
+      'stevearc/overseer.nvim',
+      config = function() require('overseer').setup() end
+  }
+
+  -- Tree Browser
+  use {
+      'nvim-tree/nvim-tree.lua',
+      requires = {
+          'nvim-tree/nvim-web-devicons', -- optional
+      }
+  }
 end)
