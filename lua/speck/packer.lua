@@ -32,8 +32,6 @@ return require('packer').startup(function(use)
   use('theprimeagen/harpoon')
   -- View and manage the undo tree, allows branching-like behavior with changes
   use('mbbill/undotree')
-  -- Git integration
-  use('tpope/vim-fugitive')
 
   -- LSP manager
   use {

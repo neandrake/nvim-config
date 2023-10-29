@@ -28,6 +28,11 @@ end
 
 cmp.setup({
     enabled = function()
+        -- Disable completion in prompts and non-buffers
+        local buftype = vim.bo.buftype
+        if buftype == 'prompt' or buftype == 'nofile' then
+            return false
+        end
         -- Disable completion when typing in a comment
         local context = require('cmp.config.context')
         if context.in_treesitter_capture('comment') or context.in_syntax_group('Comment') then
@@ -75,7 +80,7 @@ cmp.setup({
     }),
     view = {
         -- Use the default popup menu, but ensure the highest-scoring item
-        -- is near the cursor. The menu expands down by default but may 
+        -- is near the cursor. The menu expands down by default but may
         -- expand up depending where the cursor is located.
         entries = { name = 'custom', selection_order = 'near_cursor' },
     },
