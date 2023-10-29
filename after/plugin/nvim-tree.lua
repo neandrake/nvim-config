@@ -1,11 +1,4 @@
-
--- Disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
-vim.opt.termguicolors = true
-
-require("nvim-tree").setup({
+require('nvim-tree').setup {
     sort_by = "case_sensitive",
     view = {
         width = 30,
@@ -16,4 +9,9 @@ require("nvim-tree").setup({
     filters = {
         dotfiles = true,
     },
-})
+}
+
+local api = require('nvim-tree.api')
+vim.keymap.set("n", "<leader>tt", api.tree.toggle)
+vim.keymap.set("n", "<leader>tf", api.tree.find_file)
+

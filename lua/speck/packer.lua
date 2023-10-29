@@ -68,10 +68,7 @@ return require('packer').startup(function(use)
   use('rcarriga/nvim-notify')
 
   -- Task Runner
-  use {
-      'stevearc/overseer.nvim',
-      config = function() require('overseer').setup() end
-  }
+  use('stevearc/overseer.nvim')
 
   -- Tree Browser
   use {

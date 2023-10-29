@@ -1,5 +1,5 @@
--- Easy way to open up netrw
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+-- Easy way to open up netrw / Disabled for nvim-tree.
+-- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Easy way to move selected lines up/down
 vim.keymap.set("v", "J", ":m'>+<CR>gv=gv")

@@ -26,6 +26,11 @@ vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+-- Disable netrw to avoid race conditions with nvim-tree and netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- Set termguicolors to enable highlight groups in nvim-tree
 vim.opt.termguicolors = true
 
 -- Keep cursor 8 lines from top/bottom
