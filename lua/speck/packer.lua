@@ -75,4 +75,13 @@ return require('packer').startup(function(use)
           'nvim-tree/nvim-web-devicons', -- optional
       }
   }
+
+  -- Tabs for buffers
+  use {
+      'akinsho/bufferline.nvim',
+      tag = "v4.4.*",
+      requires = {
+          'nvim-tree/nvim-web-devicons',
+      }
+  }
 end)
