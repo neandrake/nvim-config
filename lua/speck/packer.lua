@@ -5,22 +5,25 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
   -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+  use('wbthomason/packer.nvim')
 
   -- Fuzzy file finder
   use {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.4',
-	  requires = { {'nvim-lua/plenary.nvim'} }
+	  requires = {
+          'nvim-lua/plenary.nvim',
+      },
   }
+  use('nvim-telescope/telescope-ui-select.nvim')
 
   -- Color theme
-  use({
+  use {
 	  'rose-pine/neovim',
 	  as = 'rose-pine',
 	  config = function()
 		  vim.cmd('colorscheme rose-pine')
 	  end
-  })
+  }
 
   -- Abide .editorconfig settings
   use('gpanders/editorconfig.nvim')

@@ -13,7 +13,16 @@ telescope.setup({
             '%.jar$', '%.dll$', '%.so', '%.dylib',
         },
     },
+
+    extensions = {
+        ['ui-select'] = {
+            require('telescope.themes').get_dropdown {
+            },
+        },
+    },
 })
+
+telescope.load_extension('ui-select')
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
