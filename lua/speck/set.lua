@@ -48,3 +48,5 @@ vim.opt.colorcolumn = "80"
 
 vim.g.mapleader = " "
 
+-- Integrate yank/delete/change/put with the system clipboard
+vim.opt.clipboard = "unnamedplus"
