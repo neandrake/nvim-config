@@ -6,11 +6,12 @@ telescope.setup({
         scroll_strategy = 'limit',
         selection_strategy = 'closest',
         -- Don't suggest binary files
-        file_ignore_pattherns = {
+        file_ignore_patterns = {
             '/build', '/bin/', '/e%-bin/', '/lib/',
             '%.zip$', '%.tgz$', '%.gz$',
             '%.jpeg$', '%.jpg$', '%.png$', '%.bmp$', '%.ico$', '%.gif$',
             '%.jar$', '%.dll$', '%.so', '%.dylib',
+            '%.class$',
         },
     },
 
