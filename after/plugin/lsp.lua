@@ -103,6 +103,7 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>sa", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>lR", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set({"n", "v"}, "<leader>rf", function() vim.lsp.buf.format() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
 
