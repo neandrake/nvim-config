@@ -68,6 +68,9 @@ return require('packer').startup(function(use)
   -- Notifications UI
   use('rcarriga/nvim-notify')
 
+  -- LSP Highlight of what's udner cursor
+  use('RRethy/vim-illuminate')
+
   -- Task Runner
   use('stevearc/overseer.nvim')
 
