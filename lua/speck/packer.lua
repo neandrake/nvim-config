@@ -17,7 +17,7 @@ return require('packer').startup(function(use)
   use('nvim-telescope/telescope-ui-select.nvim')
 
   -- Color theme
-  use { "ellisonleao/gruvbox.nvim" }
+  use ('ellisonleao/gruvbox.nvim')
   --[[
   use {
 	  'rose-pine/neovim',
@@ -27,6 +27,11 @@ return require('packer').startup(function(use)
 	  end
   }
   --]]
+
+  use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+  }
 
   -- Abide .editorconfig settings
   use('gpanders/editorconfig.nvim')
