@@ -17,6 +17,8 @@ return require('packer').startup(function(use)
   use('nvim-telescope/telescope-ui-select.nvim')
 
   -- Color theme
+  use { "ellisonleao/gruvbox.nvim" }
+  --[[
   use {
 	  'rose-pine/neovim',
 	  as = 'rose-pine',
@@ -24,6 +26,7 @@ return require('packer').startup(function(use)
 		  vim.cmd('colorscheme rose-pine')
 	  end
   }
+  --]]
 
   -- Abide .editorconfig settings
   use('gpanders/editorconfig.nvim')
@@ -68,7 +71,7 @@ return require('packer').startup(function(use)
   -- Notifications UI
   use('rcarriga/nvim-notify')
 
-  -- LSP Highlight of what's udner cursor
+  -- LSP Highlight of what's under cursor
   use('RRethy/vim-illuminate')
 
   -- Task Runner

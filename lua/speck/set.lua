@@ -1,5 +1,7 @@
--- Use block cursor always (default insert mode is thin bar)
-vim.opt.guicursor = ""
+-- Use block cursor for most modes, underline for insert/replace
+--vim.opt.guicursor = "n-v-c-ci-cr-o:block-Cursor,i-r-sm-:hor20"
+-- Use block cursor for most modes, vertical line for inserts, horizontal for replace
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 -- Turn on line numbers and use relative line numbers
 vim.opt.nu = true

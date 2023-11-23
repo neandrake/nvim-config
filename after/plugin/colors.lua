@@ -1,3 +1,10 @@
+require('gruvbox').setup {
+    contrast = "hard",
+}
+
+vim.cmd('colorscheme gruvbox')
+
+--[[
 require('rose-pine').setup({
     disable_background = false
 })
@@ -12,3 +19,4 @@ function SetColorTheme(color)
 end
 
 SetColorTheme()
+--]]
