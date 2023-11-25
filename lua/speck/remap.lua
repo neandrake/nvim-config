@@ -29,7 +29,7 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 -- vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Delete to void register so deleted contents do not overwrite clipboard
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- Makes C-c behave like Esc, some minor differences exist:
 --   When in V mode and modifying multiple vertical lines then using C-c it
@@ -50,4 +50,3 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Use leader-x to mark the current file as executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
-

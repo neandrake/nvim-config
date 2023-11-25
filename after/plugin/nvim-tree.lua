@@ -45,4 +45,3 @@ vim.keymap.set("n", "<leader>tc", function()
     api.tree.find_file()
 end)
 vim.keymap.set("n", "<leader>tr", api.tree.reload)
-
