@@ -15,6 +15,10 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
 })
 
+-- Unmap Tab
+cmp_mappings['<Tab>'] = nil
+cmp_mappings['<S-Tab>'] = nil
+
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
@@ -106,5 +110,9 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set({ "n", "v" }, "<leader>rf", function() vim.lsp.buf.format() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
+
+vim.diagnostic.config({
+    virtual_text = true,
+})
 
 lsp.setup()
