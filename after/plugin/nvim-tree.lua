@@ -37,8 +37,7 @@ require('nvim-tree').setup {
 
 local api = require('nvim-tree.api')
 vim.keymap.set("n", "<leader>tt", api.tree.toggle)
-vim.keymap.set("n", "<leader>tf", api.tree.find_file)
-vim.keymap.set("n", "<leader>tc", function()
+vim.keymap.set("n", "<leader>tf", function()
     -- Collapse all folders, select & expand for current buffer. Different from
     -- collapse_all(true) in that it works for current buffer, not all opened.
     api.tree.collapse_all(false)

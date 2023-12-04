@@ -12,22 +12,15 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag = '0.1.4',
         requires = {
             'nvim-lua/plenary.nvim',
+            'olimorris/persisted.nvim',
         },
     }
     use('nvim-telescope/telescope-ui-select.nvim')
 
     -- Color theme
     use('ellisonleao/gruvbox.nvim')
-    --[[
-    use {
-        'rose-pine/neovim',
-        as = 'rose-pine',
-        config = function()
-            vim.cmd('colorscheme rose-pine')
-        end
-    }
-    --]]
 
+    -- Status line at bottom.
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true },
@@ -98,5 +91,10 @@ return require('packer').startup(function(use)
         requires = {
             'nvim-tree/nvim-web-devicons',
         }
+    }
+
+    -- Session management
+    use {
+        'olimorris/persisted.nvim',
     }
 end)

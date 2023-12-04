@@ -20,10 +20,18 @@ telescope.setup({
             require('telescope.themes').get_dropdown {
             },
         },
+
+        persisted = {
+            layout_config = {
+                width = 0.55,
+                height = 0.55,
+            },
+        },
     },
 })
 
 telescope.load_extension('ui-select')
+telescope.load_extension('persisted')
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
