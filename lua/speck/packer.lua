@@ -20,6 +20,11 @@ return require('packer').startup(function(use)
     -- Color theme
     use('ellisonleao/gruvbox.nvim')
 
+    -- Icons for file types added to the font/glyphs. This is used by other plugins.
+    -- Do first-class install here instead of as dependency, so that all plugins can
+    -- find it ('trouble' had difficulties locating/identifying it being installed).
+    use('nvim-tree/nvim-web-devicons')
+
     -- Status line at bottom.
     use {
         'nvim-lualine/lualine.nvim',

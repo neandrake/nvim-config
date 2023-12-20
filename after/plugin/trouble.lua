@@ -3,13 +3,13 @@ local trouble = require('trouble')
 trouble.setup {
     position = 'bottom',
     height = 10,
-    icons = false, -- Should be true but 'trouble' doesn't seem to pick up nvim-web-devicons being installed.
+    icons = true, -- Use 'nvim-web-devicons'
     mode = 'workspace_diagnostics',
     severity = nil, -- Use nil = ALL, otherwise vim.diagnostic.severity.ERROR | WARN | INFO | HINT.
     group = true, -- Group diagnostics by file.
     multiline = true, -- Render multi-line messages.
-    auto_open = true, -- Automatically open the list when there are diagnostics.
-    auto_close = true, -- Automatically close the list when there are no diagnostics.
+    auto_open = false, -- Automatically open the list when there are diagnostics.
+    auto_close = false, -- Automatically close the list when there are no diagnostics.
     auto_preview = true, -- Automatically preview the location of the diagnostic.
     auto_fold = true, -- Automatically fold a file trouble list at creation.
 
