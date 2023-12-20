@@ -52,3 +52,7 @@ vim.g.mapleader = " "
 
 -- Integrate yank/delete/change/put with the system clipboard
 vim.opt.clipboard = "unnamedplus"
+
+-- Specify what gets saved when saving sessions. Note that this omits 'blank'
+-- which is part of vim's default options.
+vim.opt.sessionoptions = "buffers,curdir,folds,globals,options,localoptions,tabpages,winpos,winsize"
