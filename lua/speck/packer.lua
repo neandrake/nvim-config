@@ -97,4 +97,11 @@ return require('packer').startup(function(use)
     use {
         'olimorris/persisted.nvim',
     }
+
+    use {
+        'folke/trouble.nvim',
+        requires = {
+            'nvim-tree/nvim-web-devicons',
+        }
+    }
 end)
