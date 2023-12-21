@@ -5,42 +5,64 @@ local persisted = require('persisted')
 
 persisted.setup({
     use_git_branch = true,
-    default_brance = "main",
+    default_branch = "main",
 
     autosave = true,
     autoload = true,
 })
 
+local nvimtree = require('nvim-tree.api')
+local trouble = require('trouble')
 local persisted_hook_group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
--- AutoCmd to hook into the pre-save callback, to close NvimTree and Trouble
--- so their state is not persisted with the session.
+-- Track the state of NvimTree and Trouble during a save. These windows/buffers
+-- are closed prior to saving state, so they are not part of the session state
+-- persisted to disk.
+local nvim_transient_save_state = {
+    is_nvimtree_open = false,
+    is_trouble_open = false,
+}
+
+function nvim_transient_save_state.capture()
+    nvim_transient_save_state.is_nvimtree_open = nvimtree.tree.is_visible()
+    nvim_transient_save_state.is_trouble_open = trouble.is_open()
+end
+
+function nvim_transient_save_state.restore()
+    if nvim_transient_save_state.is_nvimtree_open then
+        nvimtree.tree.open()
+    end
+    if nvim_transient_save_state.is_trouble_open then
+        trouble.open()
+    end
+    vim.api.nvim_command("redraw")
+end
+
+-- Hook into the pre-save callback, to close NvimTree and Trouble so their state
+-- is not persisted with the session.
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "PersistedSavePre",
     group = persisted_hook_group,
     callback = function()
-        pcall(vim.cmd, "NvimTreeClose")
-        pcall(vim.cmd, "TroubleClose")
+        nvim_transient_save_state.capture()
+        nvimtree.tree.close()
+        trouble.close()
     end,
 })
 -- Hook into post-save to re-open NvimTree and Trouble.
--- XXX: How to get and restore their state between these callbacks?
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "PersistedSavePost",
     group = persisted_hook_group,
-    callback = function()
-        pcall(vim.cmd, "NvimTreeOpen")
-        -- Don't turn on Trouble after saving. It's likely more annoying to have
-        -- this suddenly appear than for it to disappear if open.
-        --pcall(vim.cmd, "Trouble")
-    end,
+    callback = nvim_transient_save_state.restore,
 })
--- Hook into post-load to turn on NvimTree
+-- Hook into autosave starting, which will occur regardless of whether a session
+-- was loaded as long as autosave is enabled.
 vim.api.nvim_create_autocmd({ "User" }, {
-    pattern = "PersistedLoadPost",
+    pattern = "PersistedStateChange",
     group = persisted_hook_group,
     callback = function()
-        pcall(vim.cmd, "NvimTreeOpen")
+        nvimtree.tree.open()
+        vim.api.nvim_command("redraw")
     end,
 })
 

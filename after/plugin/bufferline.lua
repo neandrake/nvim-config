@@ -1,6 +1,34 @@
 local bufline = require('bufferline')
 bufline.setup({
     options = {
+        mode = 'buffers',
+        numbers = 'buffer_id',
+        separator_style = 'slant',
+        indicator = {
+            style = 'underline',
+        },
+
+        --[[
+        custom_filter = function(buffer_id)
+            local buf = vim.bo[buffer_id]
+
+            if buf.filetype == 'netrw' or buf.filetype == 'NvimTree' then
+                return false
+            end
+
+            if buf.buftype == 'nofile' or buf.buftype == 'prompt' then
+                return false
+            end
+
+            local bufname = vim.api.nvim_buf_get_name(buffer_id)
+            if vim.fn.isdirectory(bufname) ~= 0 then
+                return false
+            end
+
+            return true
+        end,
+        ]]--
+
         hover = {
             enabled = true,
             delay = 100,
@@ -11,9 +39,9 @@ bufline.setup({
         -- Note the nested object structure here. The documentation in `:help bufferline-offset`
         -- demonstrates using this nested object though it looks like a bug.
         offsets = { {
-            filetype = "NvimTree",
-            text = "File Explorer",
-            text_align = "left",
+            filetype = 'NvimTree',
+            text = 'File Explorer',
+            text_align = 'left',
             separator = true,
         } }
     },

@@ -9,7 +9,7 @@ return require('packer').startup(function(use)
 
     -- Fuzzy file finder
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.4',
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
         requires = {
             'nvim-lua/plenary.nvim',
             'olimorris/persisted.nvim',

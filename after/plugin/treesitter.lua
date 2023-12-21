@@ -55,6 +55,8 @@ require('nvim-treesitter.configs').setup {
 
 }
 
+-- Displays the scope/context (functions, classes, etc.) at the top of the
+-- buffer, for the current cursor location.
 local ts_ctx = require('treesitter-context')
 ts_ctx.setup {
     enable = true,
@@ -71,8 +73,12 @@ ts_ctx.setup {
     mode = 'topline',
 
     on_attach = function(buf)
+        -- The treesitter-context behavior requires modifying the buffer.
+        if not vim.bo[buf].modifiable then
+            return false
+        end
         -- Disable attaching to prompts or non-file buffers.
-        local buftype = vim.bo.buftype
+        local buftype = vim.bo[buf].buftype
         if buftype == 'prompt' or buftype == 'nofile' then
             return false
         end

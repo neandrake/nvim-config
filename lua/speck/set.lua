@@ -32,6 +32,9 @@ vim.opt.incsearch = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Disable hidden buffers from showing, to prevent netrw buffers when opening a directory
+vim.opt.hidden = false
+
 -- Set termguicolors to enable highlight groups in nvim-tree
 vim.opt.termguicolors = true
 
@@ -41,9 +44,10 @@ vim.opt.scrolloff = 8
 -- Show gutter for signs/icons
 vim.opt.signcolumn = "yes"
 
--- ??
+-- I think this allows `@` to appear in filenames.
 vim.opt.isfname:append("@-@")
 
+-- The ms to wait after inactivity for saving the swap file.
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
@@ -54,5 +58,9 @@ vim.g.mapleader = " "
 vim.opt.clipboard = "unnamedplus"
 
 -- Specify what gets saved when saving sessions. Note that this omits 'blank'
--- which is part of vim's default options.
-vim.opt.sessionoptions = "buffers,curdir,folds,globals,options,localoptions,tabpages,winpos,winsize"
+-- which is part of vim's default options, and omits local/global options. If
+-- those are saved then things like modifiable state are persisted restuling
+-- in odd behavior, e.g. run `nvim -M` to open in read-only state, close session
+-- then later open regularly without `-M` and the buffers will still be
+-- read-only.
+vim.opt.sessionoptions = "buffers,folds,tabpages,winpos,winsize"

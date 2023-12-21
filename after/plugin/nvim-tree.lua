@@ -1,6 +1,11 @@
 require('nvim-tree').setup {
     sort_by = "case_sensitive",
 
+    -- Turn off hijacking netrw behaviors as it interferes with `persist` plugin
+    -- saving and restoring state of the session.
+    hijack_netrw = false,
+    hijack_unnamed_buffer_when_opening = false,
+
     -- Turn on diagnostics/lsp integration.
     diagnostics = {
         enable = true,
