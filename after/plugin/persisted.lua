@@ -38,6 +38,36 @@ function nvim_transient_save_state.restore()
     vim.api.nvim_command("redraw")
 end
 
+-- Filter to find only the buffers pointing to directories.
+local function dir_buffer_filter(buf)
+    if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_buf_get_option(buf, 'buflisted') then
+        return false
+    end
+
+    local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+    if filetype == 'netrw' then return true end
+
+    local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+    if buftype == 'nofile' or buftype == 'prompt' then return true end
+
+    local name = vim.api.nvim_buf_get_name(buf)
+    local path = vim.loop.fs_realpath(vim.fn.expand(name))
+    if path == nil then
+        return false
+    end
+    return vim.fn.isdirectory(path) ~= 0
+end
+
+-- Gets a list of buffers that are valid/listed and are for a directory, and
+-- deletes them.
+local function close_dir_buffers()
+    -- Delete each buffer that passes the filter.
+    local buffers_to_del = vim.tbl_filter(dir_buffer_filter, vim.api.nvim_list_bufs())
+    for _, buffer in ipairs(buffers_to_del) do
+        vim.api.nvim_buf_delete(buffer, {})
+    end
+end
+
 -- Hook into the pre-save callback, to close NvimTree and Trouble so their state
 -- is not persisted with the session.
 vim.api.nvim_create_autocmd({ "User" }, {
@@ -63,6 +93,14 @@ vim.api.nvim_create_autocmd({ "User" }, {
     callback = function()
         nvimtree.tree.open()
         vim.api.nvim_command("redraw")
+    end,
+})
+-- Delete buffers for directories after load.
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "PersistedLoadPost",
+    group = persisted_hook_group,
+    callback = function()
+        close_dir_buffers()
     end,
 })
 
