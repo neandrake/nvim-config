@@ -1,4 +1,5 @@
 local bufline = require('bufferline')
+local bufdel = require('bufdelete')
 bufline.setup({
     options = {
         mode = 'buffers',
@@ -7,6 +8,8 @@ bufline.setup({
         indicator = {
             style = 'underline',
         },
+
+        close_command = bufdel.bufdelete,
 
         hover = {
             enabled = true,

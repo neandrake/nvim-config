@@ -96,6 +96,10 @@ return require('packer').startup(function(use)
         }
     }
 
+    use {
+        'famiu/bufdelete.nvim',
+    }
+
     -- Session management
     use {
         'olimorris/persisted.nvim',
