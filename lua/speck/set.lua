@@ -32,9 +32,6 @@ vim.opt.incsearch = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- Disable hidden buffers from showing, to prevent netrw buffers when opening a directory
-vim.opt.hidden = false
-
 -- Set termguicolors to enable highlight groups in nvim-tree
 vim.opt.termguicolors = true
 

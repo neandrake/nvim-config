@@ -58,23 +58,26 @@ function nvim_transient_save_state.restore()
     vim.api.nvim_command("redraw")
 end
 
--- Filter to find only the buffers pointing to directories.
-local function dir_buffer_filter(buf)
+-- Filter to find buffers to be closed pre/post load/save. This should return
+-- true for any buffer that isn't for a file/text-editing.
+local function nonpersisted_buffer_filter(buf)
     if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_buf_get_option(buf, 'buflisted') then
         return false
     end
 
+    -- netrw is disabled but just in case.
     local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
     if filetype == 'netrw' then return true end
 
+    -- Non-file buffers and prompts are sometimes tagged as such.
     local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
     if buftype == 'nofile' or buftype == 'prompt' then return true end
 
+    -- Check if the buffer's name is a directory, which if so is likely some
+    -- extraneous buffer from having opened Neovim with a directory argument.
     local name = vim.api.nvim_buf_get_name(buf)
     local path = vim.loop.fs_realpath(vim.fn.expand(name))
-    if path == nil then
-        return false
-    end
+    if path == nil then return false end
     return vim.fn.isdirectory(path) ~= 0
 end
 
@@ -82,7 +85,7 @@ end
 -- deletes them.
 local function close_dir_buffers()
     -- Delete each buffer that passes the filter.
-    local buffers_to_del = vim.tbl_filter(dir_buffer_filter, vim.api.nvim_list_bufs())
+    local buffers_to_del = vim.tbl_filter(nonpersisted_buffer_filter, vim.api.nvim_list_bufs())
     for _, buffer in ipairs(buffers_to_del) do
         vim.api.nvim_buf_delete(buffer, {})
     end
