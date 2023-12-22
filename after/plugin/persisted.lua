@@ -28,6 +28,25 @@ function nvim_transient_save_state.capture()
     nvim_transient_save_state.is_trouble_open = trouble.is_open()
 end
 
+-- Filter to find windows whose current/main buffer is not NvimTree or Trouble.
+local function nvimtree_win_filter(win)
+    local curbuf = vim.api.nvim_win_get_buf(win)
+    local filetype = vim.api.nvim_buf_get_option(curbuf, 'filetype')
+
+    if filetype == 'NvimTree' or filetype == 'Trouble' then return false end
+
+    return true
+end
+
+-- Find the first non-NvimTree and non-Trouble window and set focus to it.
+local function focus_main_window()
+    local wins = vim.tbl_filter(nvimtree_win_filter, vim.api.nvim_list_wins())
+    for _, win in ipairs(wins) do
+        vim.api.nvim_set_current_win(win)
+        break
+    end
+end
+
 function nvim_transient_save_state.restore()
     if nvim_transient_save_state.is_nvimtree_open then
         nvimtree.tree.open()
@@ -35,6 +54,7 @@ function nvim_transient_save_state.restore()
     if nvim_transient_save_state.is_trouble_open then
         trouble.open()
     end
+    focus_main_window()
     vim.api.nvim_command("redraw")
 end
 
@@ -92,6 +112,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     group = persisted_hook_group,
     callback = function()
         nvimtree.tree.open()
+        focus_main_window()
         vim.api.nvim_command("redraw")
     end,
 })
@@ -101,6 +122,8 @@ vim.api.nvim_create_autocmd({ "User" }, {
     group = persisted_hook_group,
     callback = function()
         close_dir_buffers()
+        focus_main_window()
+        vim.api.nvim_command("redraw")
     end,
 })
 
