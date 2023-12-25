@@ -67,6 +67,9 @@ return require('packer').startup(function(use)
         }
     }
 
+    -- Display status of LSP server state.
+    use('j-hui/fidget.nvim')
+
     -- Improve VIM's default UI
     use('stevearc/dressing.nvim')
 
@@ -75,9 +78,6 @@ return require('packer').startup(function(use)
 
     -- LSP Highlight of what's under cursor
     use('RRethy/vim-illuminate')
-
-    -- Task Runner
-    use('stevearc/overseer.nvim')
 
     -- Tree Browser
     use {
@@ -96,6 +96,7 @@ return require('packer').startup(function(use)
         }
     }
 
+    -- Add functionality to close buffers without modifying window layout.
     use {
         'famiu/bufdelete.nvim',
     }
@@ -105,6 +106,7 @@ return require('packer').startup(function(use)
         'olimorris/persisted.nvim',
     }
 
+    -- Workspace diagnostics window.
     use {
         'folke/trouble.nvim',
         requires = {
