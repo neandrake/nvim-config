@@ -1,6 +1,6 @@
 -- To use:
 --
--- local log = require('speck.log')
+-- local log = require('speck.core.log')
 -- log.info('...')
 --
 -- Logs will be saved to stdata path, ~/.local/share/nvim/speck.log

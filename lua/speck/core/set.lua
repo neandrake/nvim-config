@@ -61,3 +61,8 @@ vim.opt.clipboard = "unnamedplus"
 -- then later open regularly without `-M` and the buffers will still be
 -- read-only.
 vim.opt.sessionoptions = "buffers,folds,tabpages,winpos,winsize"
+
+-- Disable showing diagnostics as virtual text directly in the buffer.
+vim.diagnostic.config({
+    virtual_text = false,
+})
