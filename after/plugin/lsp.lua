@@ -1,6 +1,7 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
 local lspkind = require('lspkind')
+local types = require('cmp.types')
 
 lsp.preset('recommended')
 
@@ -19,14 +20,10 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
-})
-
 -- Filter for auto-complete sources to not suggest Text or Snippet
-local source_entry_filter = function(entry, ctx)
-    if entry:get_kind() == cmp.lsp.CompletionItemKind.Text then return false end
-    if entry:get_kind() == cmp.lsp.CompletionItemKind.Snippet then return false end
+local source_entry_filter = function(entry, _ctx)
+    if types.lsp.CompletionItemKind[entry:get_kind()] ~= 'Text' then return false end
+    if types.lsp.CompletionItemKind[entry:get_kind()] ~= 'Snippet' then return false end
     return true
 end
 
@@ -45,13 +42,19 @@ cmp.setup({
         end
         return true
     end,
+    preselect = 'item',
+    completion = {
+        completeopt = 'menu,menuone,noinsert',
+    },
     formatting = {
+        -- Change order of fields so the icon is first
+        fields = { 'menu', 'abbr', 'kind' },
         format = lspkind.cmp_format({
             mode = 'symbol',
             maxwidth = 50,
             ellipsis_char = '...',
 
-            before = function(entry, vim_item)
+            before = function(entry, item)
                 local word = entry.get_insert_text()
                 if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
                     word = vim.lsp.util.parse_snippet(word)
@@ -62,32 +65,47 @@ cmp.setup({
                     word = word .. "~"
                 end
 
-                vim_item.abbr = word
-                return vim_item
+                item.abbr = word
+                return item
             end,
         }),
     },
-    sources = cmp.config.sources({
-        -- Don't suggest Text or Snippet entries
+    sources = {
         {
             name = 'nvim_lsp',
+            group_index = 1,
             entry_filter = source_entry_filter,
         },
         {
             name = 'luasnip',
+            group_index = 2,
+            max_item_count = 5,
             entry_filter = source_entry_filter,
         },
         {
             name = 'buffer',
+            group_index = 3,
+            max_item_count = 5,
             entry_filter = source_entry_filter,
         },
-    }),
+    },
     view = {
         -- Use the default popup menu, but ensure the highest-scoring item
         -- is near the cursor. The menu expands down by default but may
         -- expand up depending where the cursor is located.
         entries = { name = 'custom', selection_order = 'near_cursor' },
+        docs = {
+            auto_open = true,
+        },
     },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+})
+
+lsp.setup_nvim_cmp({
+    mapping = cmp_mappings
 })
 
 lsp.on_attach(function(client, bufnr)
