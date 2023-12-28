@@ -41,30 +41,43 @@ return {
             local lsp_zero = require('lsp-zero')
             local cmp = require('cmp')
             local lspkind = require('lspkind')
+            local types = require('cmp.types')
 
             lsp_zero.extend_cmp()
 
-            -- Filter for auto-complete sources to not suggest Text or Snippet
-            local source_entry_filter = function(entry, _ctx)
-                --[[
-                local types = require('cmp.types')
-                if types.lsp.CompletionItemKind[entry:get_kind()] ~= 'Text' then return false end
-                if types.lsp.CompletionItemKind[entry:get_kind()] ~= 'Snippet' then return false end
-                ]]
-                   --
-                return true
+            -- Sort Text last, Snippets second-last. Based on `cmp.config.compare.kind`.
+            local sortby_kind = function(entry1, entry2)
+                local kind1 = entry1:get_kind()
+                local kind2 = entry2:get_kind()
+                kind1 = kind1 == types.lsp.CompletionItemKind.Text and 200 or kind1
+                kind2 = kind2 == types.lsp.CompletionItemKind.Text and 200 or kind2
+                kind1 = kind1 == types.lsp.CompletionItemKind.Snippet and 100 or kind1
+                kind2 = kind2 == types.lsp.CompletionItemKind.Snippet and 100 or kind2
+                if kind1 ~= kind2 then
+                    local diff = kind1 - kind2
+                    if diff < 0 then
+                        return true
+                    elseif diff > 0 then
+                        return false
+                    end
+                end
+                return nil
             end
 
-            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+            local select_opts = {
+                behavior = cmp.SelectBehavior.SelectBehavior,
+            }
+
             cmp.setup({
                 mapping = cmp.mapping.preset.insert({
-                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                    ['<C-j>'] = cmp.mapping.select_prev_item(select_opts),
+                    ['<C-k>'] = cmp.mapping.select_next_item(select_opts),
                     ['<CR>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<ESC>'] = cmp.mapping.abort(),
+                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
                     ['<Tab>'] = nil,
                     ['<S-Tab>'] = nil,
                 }),
@@ -86,34 +99,49 @@ return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
                 },
+                sorting = {
+                    comparators = {
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+                        sortby_kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                    },
+                },
                 formatting = {
                     -- Change order of fields so the icon is first
-                    fields = { 'menu', 'abbr', 'kind' },
-                    format = lspkind.cmp_format({
-                        mode = 'symbol',
-                        maxwidth = 50,
-                        ellipsis_char = '...',
-                    }),
+                    fields = { 'kind', 'menu', 'abbr' },
+                    format = function(entry, item)
+                        local rendered = lspkind.cmp_format({
+                            mode = 'symbol_text',
+                            maxwidth = 50,
+                            ellipsis_char = '...',
+                        })(entry, item)
+
+                        local strings = vim.split(rendered.kind, '%s', { trimempty = true })
+                        rendered.kind = ' ' .. (strings[1] or '') .. ' '
+                        rendered.menu = '(' .. (strings[2] or '') .. ')'
+                        return rendered
+                    end,
                 },
-                sources = {
+                sources = cmp.config.sources({
                     {
                         name = 'nvim_lsp',
                         group_index = 1,
-                        entry_filter = source_entry_filter,
                     },
                     {
                         name = 'luasnip',
                         group_index = 2,
                         max_item_count = 5,
-                        entry_filter = source_entry_filter,
                     },
                     {
                         name = 'buffer',
                         group_index = 3,
                         max_item_count = 5,
-                        entry_filter = source_entry_filter,
                     },
-                },
+                }),
                 view = {
                     -- Use the default popup menu, but ensure the highest-scoring item
                     -- is near the cursor. The menu expands down by default but may
@@ -123,9 +151,18 @@ return {
                         auto_open = true,
                     },
                 },
+                -- See https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
                 window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
+                    completion = cmp.config.window.bordered({
+                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+                        col_offset = -3,
+                        side_padding = 0,
+                    }),
+                    documentation = cmp.config.window.bordered({
+                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+                        col_offset = -3,
+                        side_padding = 0,
+                    }),
                 },
             })
         end,
