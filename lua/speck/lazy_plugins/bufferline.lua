@@ -13,19 +13,15 @@ return {
         bufline.setup({
             options = {
                 mode = 'buffers',
-                numbers = 'buffer_id',
+                numbers = function(opts)
+                    return string.format('%s', opts.lower(opts.id))
+                end,
                 separator_style = 'slant',
                 indicator = {
-                    style = 'underline',
+                    style = 'icon',
                 },
-
+                buffer_close_icon = '',
                 close_command = bufdel.bufdelete,
-
-                hover = {
-                    enabled = true,
-                    delay = 100,
-                    reveal = { 'close' },
-                },
 
                 -- Offsets the buffer tabs to not span across the NvimTree sidebar.
                 -- Note the nested object structure here. The documentation in `:help bufferline-offset`
