@@ -62,7 +62,14 @@ vim.opt.clipboard = "unnamedplus"
 -- read-only.
 vim.opt.sessionoptions = "buffers,folds,tabpages,winpos,winsize"
 
--- Disable showing diagnostics as virtual text directly in the buffer.
 vim.diagnostic.config({
+    -- Disable showing diagnostics as virtual text directly in the buffer.
     virtual_text = false,
+    -- Show higher severity issues over lower-severity ones.
+    severity_sort = true,
+
+    -- Configuration for the floating window showing diagnostics.
+    float = {
+        severity_sort = true,
+    },
 })

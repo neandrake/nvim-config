@@ -201,10 +201,9 @@ return {
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
-            'hrsh7th/cmp-nvim-lsp',
+            'VonHeikemen/lsp-zero.nvim',
             'williamboman/mason-lspconfig.nvim',
             'nvim-telescope/telescope.nvim',
-            'onsails/lspkind.nvim',
         },
         config = function()
             local lsp_zero = require('lsp-zero')
