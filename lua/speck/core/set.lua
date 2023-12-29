@@ -24,8 +24,9 @@ vim.opt.backup = false
 vim.opt.undodir = (os.getenv('HOME') or os.getenv('LOCALAPPDATA')) .. '/.vim/undodir'
 vim.opt.undofile = true
 
--- Highlight while typing search term but don't keep highlight turned on
-vim.opt.hlsearch = false
+-- Turn on hlsearch and incsearch as it will be taken over by hlslens plugin.
+-- Without that plugin prefer hlsearch off as it will retain highlighted instances.
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 -- Disable netrw to avoid race conditions with nvim-tree and netrw

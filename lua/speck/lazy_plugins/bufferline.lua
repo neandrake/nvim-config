@@ -13,9 +13,6 @@ return {
         bufline.setup({
             options = {
                 mode = 'buffers',
-                numbers = function(opts)
-                    return string.format('%s', opts.lower(opts.id))
-                end,
                 separator_style = 'slant',
                 indicator = {
                     style = 'icon',
