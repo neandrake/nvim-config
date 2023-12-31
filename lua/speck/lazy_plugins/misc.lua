@@ -29,6 +29,14 @@ return {
     -- find it ('trouble' had difficulties locating/identifying it being installed).
     { 'nvim-tree/nvim-web-devicons' },
 
+    -- Rainbow-delims to make differentiating lots of nested delims -- (, {, [, <.
+    {
+        url = 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git',
+        config = function()
+            require('rainbow-delimiters.setup').setup()
+        end,
+    },
+
     --------------------------------
     -------------- Language-context
     --------------------------------

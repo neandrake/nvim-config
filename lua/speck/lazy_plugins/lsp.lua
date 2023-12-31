@@ -170,21 +170,21 @@ return {
             -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-add-visual-studio-code-dark-theme-colors-to-the-menu
             local update_highlights = function()
                 -- gray
-                vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg='NONE', strikethrough=true, fg='#808080' })
+                vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
                 -- blue
-                vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg='NONE', fg='#569CD6' })
-                vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link='CmpIntemAbbrMatch' })
+                vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
+                vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
                 -- light blue
-                vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg='NONE', fg='#9CDCFE' })
-                vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link='CmpItemKindVariable' })
-                vim.api.nvim_set_hl(0, 'CmpItemKindText', { link='CmpItemKindVariable' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#9CDCFE' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
                 -- pink
-                vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg='NONE', fg='#C586C0' })
-                vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link='CmpItemKindFunction' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#C586C0' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
                 -- front
-                vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg='NONE', fg='#D4D4D4' })
-                vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link='CmpItemKindKeyword' })
-                vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link='CmpItemKindKeyword' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+                vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
             end
 
             update_highlights()
@@ -224,22 +224,23 @@ return {
                 local telescope = require('telescope.builtin')
 
                 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-                vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
+                vim.keymap.set("n", "ge", function() vim.lsp.buf.declaration() end, opts)
                 vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
-                vim.keymap.set("n", "go", function() vim.lsp.buf.type_definition() end, opts)
+                vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
                 vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-                vim.keymap.set("n", "<leader>fS", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
-                vim.keymap.set("n", "<leader>sd", function() vim.diagnostic.open_float() end, opts)
+                vim.keymap.set("n", "L", function() vim.diagnostic.open_float() end, opts)
+                vim.keymap.set("n", "<C-t>", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
                 vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-                vim.keymap.set("n", "<leader>sa", function() vim.lsp.buf.code_action() end, opts)
-                vim.keymap.set("n", "<leader>lR", function() vim.lsp.buf.references() end, opts)
-                vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
-                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format() end, opts)
-                vim.keymap.set("v", "<leader>rf", function()
-                    local range = {}
-                    range['start'] = vim.fn.getpos('v')
-                    range['end'] = vim.fn.getpos('.')
+                vim.keymap.set("n", "<leader>we", function() vim.lsp.buf.references() end, opts)
+                vim.keymap.set("n", "<leader>wa", function() vim.lsp.buf.code_action() end, opts)
+                vim.keymap.set("n", "<leader>wn", function() vim.lsp.buf.rename() end, opts)
+                vim.keymap.set("n", "<leader>wf", function() vim.lsp.buf.format() end, opts)
+                vim.keymap.set("v", "<leader>wf", function()
+                    local range = {
+                        ['start'] = vim.fn.getpos('v'),
+                        ['end'] = vim.fn.getpos('.')
+                    }
                     vim.lsp.buf.format({ range = range })
                 end, opts)
                 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
