@@ -1,18 +1,29 @@
--- Management of LSP servers and auto-completion.
-
+-- Management of both LSP servers and auto-completion.
+-- The "root" or main plugin for managing these are nvim-cmp for auto-complete
+-- and nvim-lspconfig for LSP. Each have additional dependencies which
 return {
+    -- This is for easy LSP configuration functionality/utilities, and is used
+    -- by both auto-completion and LSP, so defined here as a primary plugin
+    -- to be installed. This is configured to essentially not trigger automatic
+    -- setup like most plugins, and allow the auto-complete and LSP configurations
+    -- to manage this instead.
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = "v3.x",
         lazy = true,
         config = false,
         init = function()
-            -- Disable automatic setup. These extensions are setup below.
+            -- Disable automatic setup.
             vim.g.lsp_zero_extend_cmp = 0
             vim.g.lsp_zero_extend_lspconfig = 0
         end,
     },
 
+    -- Mason is a plugin for easily managing installations of LSP servers on the
+    -- system. This is configured below to use nvim-lspconfig for providing it
+    -- "registry" of LSP implementations that could be installed. Here Mason needs
+    -- configured to eagerly initialize so it occurs before mason-lspconfig that
+    -- is set up below as part of nvim-lspconfig. See also :h mason-lspconfig-quickstart.
     {
         'williamboman/mason.nvim',
         lazy = false,
@@ -20,6 +31,10 @@ return {
     },
 
     -- Autocompletion
+    -- nvim-cmp: Lua implementation of auto-completion. Uses the concept of sources
+    --           or engines for providing the results.
+    --           This also uses lsp-zero which provides an engine/source from an
+    --           LSP connected with the current buffer.
     {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
@@ -196,6 +211,11 @@ return {
     },
 
     -- LSP
+    -- nvim-lspconfig: Configurations for connecting to commong LSP server implementations.
+    -- lsp-zero: Functions/utils to simplify configuring NeoVim's LSP client and nvim-lspconfig.
+    -- mason-lspconfig: The Mason plugin modules, simple install/management of LSP servers on the system.
+    --                  The core Mason plugin is installed above but this module is specific to using
+    --                  nvim-lspconfig's set of known LSP implementations to be managed.
     {
         'neovim/nvim-lspconfig',
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
