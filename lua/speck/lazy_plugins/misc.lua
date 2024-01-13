@@ -41,15 +41,6 @@ return {
     -------------- Language-context
     --------------------------------
 
-    -- Display status of LSP server state.
-    {
-        'j-hui/fidget.nvim',
-        -- The default config() implementation doesn't seem to properly setup fidget.
-        config = function()
-            require('fidget').setup()
-        end,
-    },
-
     -- Icons for LSP related context.
     { 'onsails/lspkind.nvim' },
 
