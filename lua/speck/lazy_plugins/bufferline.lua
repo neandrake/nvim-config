@@ -33,8 +33,8 @@ return {
         })
 
         -- Switch buffer, close current buffer
-        vim.keymap.set("n", "<C-s>", function() bufline.pick() end)
-        vim.keymap.set("n", "<C-x>", function() bufdel.bufdelete(0) end)
-        vim.keymap.set("n", "<C-y>", function() bufline.close_with_pick() end)
+        vim.keymap.set("n", "<leader>bb", function() bufline.pick() end)
+        vim.keymap.set("n", "<leader>bw", function() bufdel.bufdelete(0) end)
+        vim.keymap.set("n", "<leader>bc", function() bufline.close_with_pick() end)
     end,
 }

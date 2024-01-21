@@ -6,6 +6,7 @@ return {
     dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-telescope/telescope-ui-select.nvim',
+        'nvim-telescope/telescope-live-grep-args.nvim',
         'olimorris/persisted.nvim',
     },
 
@@ -43,18 +44,19 @@ return {
         })
 
         telescope.load_extension('ui-select')
+        telescope.load_extension('live_grep_args')
         telescope.load_extension('persisted')
 
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<C-f>', builtin.find_files, {})
-        vim.keymap.set('n', '<C-b>', builtin.buffers, {})
+        vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+        vim.keymap.set('n', '<leader>pb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>pr', builtin.lsp_references, {})
         vim.keymap.set('n', '<leader>po', builtin.lsp_document_symbols, {})
         vim.keymap.set('n', '<leader>pi', builtin.lsp_incoming_calls, {})
         vim.keymap.set('n', '<leader>pm', builtin.lsp_implementations, {})
         vim.keymap.set('n', '<leader>pd', builtin.lsp_definitions, {})
         vim.keymap.set('n', '<leader>ps', function()
-            builtin.grep_string({ search = vim.fn.input("Grep > ") });
+            telescope.extensions.live_grep_args.live_grep_args()
         end)
     end
 }
