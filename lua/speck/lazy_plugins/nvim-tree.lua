@@ -24,9 +24,10 @@ return {
             modified = {
                 enable = true,
             },
-            -- Turn on git integration, to not show files ignored by .gitignore.
+            -- Turn off git integration, which tends to get crashy when mixed with heavy
+            -- LSP servers.
             git = {
-                enable = true,
+                enable = false,
             },
 
             view = {
