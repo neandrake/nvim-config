@@ -249,7 +249,7 @@ return {
                 vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
                 vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
                 vim.keymap.set("n", "L", function() vim.diagnostic.open_float() end, opts)
-                vim.keymap.set("n", "<leader>gt", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
+                vim.keymap.set("n", "<leader>pt", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
                 vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
                 vim.keymap.set("n", "<leader>gr", function() vim.lsp.buf.references() end, opts)
