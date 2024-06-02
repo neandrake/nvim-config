@@ -7,6 +7,15 @@ return {
         'nvim-telescope/telescope-ui-select.nvim',
         'nvim-telescope/telescope-live-grep-args.nvim',
         'olimorris/persisted.nvim',
+
+        -- Optional, native, in-process implementation of fzf.
+        -- Compiled on Windows with llvm (installed via scoop) using these steps:
+        -- 1. Modify src/fzf.h and prefix all function definitions with __declspec(dllexport)
+        -- 2. Compile:
+        --    $ clang -O3 -D _CRT_SECURE_NO_WARNINGS -D _CRT_NONSTDC_NO_DEPRECATE -D _CRT_SECURE_NO_DEPRECATE -Wall -Werror -std=c99 -shared .\fzf.c -o libfzf.dll
+        -- 3. Place the output in ~\AppData\Local\nvim-data\lazy\telescope-fzf-native.nvim\build\
+        --    libfzf.dll, libfzf.exp, libfzf.lib
+        'nvim-telescope/telescope-fzf-native.nvim',
     },
 
     config = function()
@@ -39,6 +48,13 @@ return {
                         height = 0.55,
                     },
                 },
+
+                fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = true,
+                    override_file_sorter = true,
+                    case_mode = 'smart_case',
+                },
             },
 
             pickers = {
@@ -51,6 +67,7 @@ return {
         telescope.load_extension('ui-select')
         telescope.load_extension('live_grep_args')
         telescope.load_extension('persisted')
+        telescope.load_extension('fzf')
 
         local builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
