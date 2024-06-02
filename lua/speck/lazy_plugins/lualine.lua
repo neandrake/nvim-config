@@ -15,7 +15,25 @@ return {
                 -- the status bar keep the current buffer filename listed rather than
                 -- 'NvimTree_1' when focus is in the tree.
                 ignore_focus = { 'NvimTree' },
-                theme = 'gruvbox',
+                theme = 'auto',
+            },
+            sections = {
+                lualine_a = { 'mode' },
+                lualine_b = { 'branch', 'diff' },
+                lualine_c = {
+                    {
+                        'filename',
+                        path = 1, -- Relative path
+                        symbols = {
+                            modified = "[*]",
+                            readonly = "[r]",
+                        },
+                    },
+                    'filetype',
+                },
+                lualine_x = { 'searchcount', 'selectioncount', 'diagnostics' },
+                lualine_y = { 'encoding', 'fileformat' },
+                lualine_z = { 'location' }
             },
         }
     end

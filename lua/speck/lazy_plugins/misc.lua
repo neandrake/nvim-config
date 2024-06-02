@@ -5,9 +5,6 @@ return {
     -------------- Editor functionality
     ------------------------------------
 
-    -- View and manage the undo tree, allows branching-like behavior with changes.
-    { 'mbbill/undotree' },
-
     -- Abide .editorconfig settings.
     { 'gpanders/editorconfig.nvim' },
 

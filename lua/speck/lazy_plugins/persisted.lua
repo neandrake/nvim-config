@@ -17,7 +17,7 @@ return {
             -- Filter to find windows whose current/main buffer is not NvimTree or Trouble.
             local function nvimtree_win_filter(win)
                 local curbuf = vim.api.nvim_win_get_buf(win)
-                local filetype = vim.api.nvim_buf_get_option(curbuf, 'filetype')
+                local filetype = vim.api.nvim_get_option_value('filetype', { buf = curbuf })
 
                 if filetype == 'NvimTree' or filetype == 'Trouble' then return false end
 
@@ -37,16 +37,16 @@ return {
             -- Filter to find buffers to be closed pre/post load/save. This should return
             -- true for any buffer that isn't for a file/text-editing.
             local function buffer_filter(buf)
-                if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_buf_get_option(buf, 'buflisted') then
+                if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_get_option_value('buflisted', { buf = buf }) then
                     return false
                 end
 
                 -- netrw is disabled but just in case.
-                local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+                local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
                 if filetype == 'netrw' then return true end
 
                 -- Non-file buffers and prompts are sometimes tagged as such.
-                local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+                local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
                 if buftype == 'nofile' or buftype == 'prompt' then return true end
 
                 -- Check if the buffer's name is a directory, which if so is likely some
