@@ -78,6 +78,7 @@ vim.diagnostic.config({
 -- Disable providers that are unlikely to be installed w/ neovim module packages.
 -- These are used for remote plugins (run in separate process), which I do not
 -- make use of any.
+vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0

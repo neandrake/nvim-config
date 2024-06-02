@@ -225,6 +225,14 @@ return {
             'williamboman/mason-lspconfig.nvim',
             'nvim-telescope/telescope.nvim',
         },
+        opts = {
+            setup = {
+                -- Prevent automatic setup of rust-analyzer. That will be setup by rustaceanvim.
+                rust_analyzer = function()
+                    return true
+                end,
+            },
+        },
         config = function()
             local lsp_zero = require('lsp-zero')
 
@@ -253,7 +261,7 @@ return {
                 vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
                 vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
                 vim.keymap.set("n", "<leader>gr", function() vim.lsp.buf.references() end, opts)
-                vim.keymap.set({"n", "v"}, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+                vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
                 vim.keymap.set("n", "<leader>cn", function() vim.lsp.buf.rename() end, opts)
                 vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format() end, opts)
                 vim.keymap.set("v", "<leader>cf", function()
@@ -271,6 +279,11 @@ return {
             local mason_lsp = require('mason-lspconfig')
             mason_lsp.setup({
                 ensure_installed = {},
+                setup_handlers = {
+                    -- Disable automatic setup and configuration of rust-analyzer. That will be set up
+                    -- and managed by the rustaceanvim plugin.
+                    ['rust_analyzer'] = function() end,
+                },
                 handlers = {
                     lsp_zero.default_setup,
                 },
