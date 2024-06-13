@@ -2,6 +2,44 @@
 -- The "root" or main plugin for managing these are nvim-cmp for auto-complete
 -- and nvim-lspconfig for LSP. Each have additional dependencies which
 return {
+    -- Rust: simplifies the configuration for an enriched LSP/DAP experience.
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^4',
+        lazy = false, -- The plugin itself manages being lazy
+    },
+
+    -- Java: simplifies the configuration for an enriched LSP/DAP experience.
+    {
+        'nvim-java/nvim-java',
+        dependencies = {
+            'nvim-java/lua-async-await',
+            'nvim-java/nvim-java-refactor',
+            'nvim-java/nvim-java-core',
+            'nvim-java/nvim-java-test',
+            'nvim-java/nvim-java-dap',
+            'MunifTanjim/nui.nvim',
+            'neovim/nvim-lspconfig',
+            'mfussenegger/nvim-dap',
+            {
+                'williamboman/mason.nvim',
+                opts = {
+                    registries = {
+                        'github:nvim-java/mason-registry',
+                        'github:mason-org/mason-registry',
+                    },
+                },
+            }
+        },
+
+        config = function()
+            local java = require('java')
+            java.setup()
+        end,
+    },
+
+    -- ## Below are the core plugins used for managing LSP configs, LSP servers, and auto-complete ## --
+
     -- This is for easy LSP configuration functionality/utilities, and is used
     -- by both auto-completion and LSP, so defined here as a primary plugin
     -- to be installed. This is configured to essentially not trigger automatic
@@ -224,6 +262,8 @@ return {
             'VonHeikemen/lsp-zero.nvim',
             'williamboman/mason-lspconfig.nvim',
             'nvim-telescope/telescope.nvim',
+            -- Ensure nvim-java is setup prior to this
+            'nvim-java/nvim-java',
         },
         opts = {
             setup = {
@@ -288,6 +328,9 @@ return {
                     lsp_zero.default_setup,
                 },
             })
+
+            local lspconfig = require('lspconfig')
+            lspconfig.jdtls.setup({})
         end,
     },
 }
