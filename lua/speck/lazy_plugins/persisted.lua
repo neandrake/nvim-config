@@ -78,9 +78,8 @@ return {
 
         persisted.setup({
             use_git_branch = true,
-            default_branch = "main",
 
-            autosave = true,
+            autostart = true,
             autoload = true,
 
             -- Save sessions for anything under ~/Source where most of my projects are,
@@ -94,6 +93,36 @@ return {
             on_autoload_no_session = function()
                 open_nvimtree()
                 focus_main_window()
+            end,
+        })
+
+        -- Persisted does not autoload unless nvim is opened with a file. This
+        -- will force auto-loading if nvim has no arguments or is passed a
+        -- single argument that is a directory, otherwise persisted will kick in
+        -- like normal.
+        vim.api.nvim_create_autocmd("VimEnter", {
+            nested = true,
+
+            callback = function()
+                if vim.g.started_with_stdin then
+                    return
+                end
+
+                local forceload = false
+                if vim.fn.argc() == 0 then
+                    forceload = true
+                elseif vim.fn.argc() == 1 then
+                    local dir = vim.fn.expand(vim.fn.argv(0))
+                    if dir == '.' then
+                        dir = vim.fn.getcwd()
+                    end
+
+                    if vim.fn.isdirectory(dir) ~= 0 then
+                        forceload = true
+                    end
+                end
+
+                persisted.autoload({ force = forceload })
             end,
         })
 
@@ -157,7 +186,7 @@ return {
         -- Hook into autosave starting, which will occur regardless of whether a session
         -- was loaded as long as autosave is enabled.
         vim.api.nvim_create_autocmd({ "User" }, {
-            pattern = "PersistedStateChange",
+            pattern = "PersistedStart",
             group = persisted_hook_group,
             callback = function()
                 open_nvimtree()
