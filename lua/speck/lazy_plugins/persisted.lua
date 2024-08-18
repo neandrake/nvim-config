@@ -100,6 +100,7 @@ return {
         -- will force auto-loading if nvim has no arguments or is passed a
         -- single argument that is a directory, otherwise persisted will kick in
         -- like normal.
+        --[[
         vim.api.nvim_create_autocmd("VimEnter", {
             nested = true,
 
@@ -125,6 +126,7 @@ return {
                 persisted.autoload({ force = forceload })
             end,
         })
+        ]]--
 
         local persisted_hook_group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
