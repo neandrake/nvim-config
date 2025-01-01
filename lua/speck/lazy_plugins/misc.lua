@@ -11,6 +11,9 @@ return {
     -- Close buffers without modifying window layout.
     { 'famiu/bufdelete.nvim' },
 
+    -- Enhanced search & replace.
+    { 'nvim-pack/nvim-spectre' },
+
     ------------------
     -------------- UI
     ------------------
