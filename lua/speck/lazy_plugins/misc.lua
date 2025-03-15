@@ -5,9 +5,6 @@ return {
     -------------- Editor functionality
     ------------------------------------
 
-    -- Abide .editorconfig settings.
-    { 'gpanders/editorconfig.nvim' },
-
     -- Close buffers without modifying window layout.
     { 'famiu/bufdelete.nvim' },
 
