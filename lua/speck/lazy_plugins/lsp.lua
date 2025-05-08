@@ -9,6 +9,7 @@ return {
         lazy = false, -- The plugin itself manages being lazy
     },
 
+    --[[
     -- Java: simplifies the configuration for an enriched LSP/DAP experience.
     {
         'nvim-java/nvim-java',
@@ -37,6 +38,7 @@ return {
             java.setup()
         end,
     },
+    ]]--
 
     -- ## Below are the core plugins used for managing LSP configs, LSP servers, and auto-complete ## --
 
@@ -262,8 +264,10 @@ return {
             'VonHeikemen/lsp-zero.nvim',
             'williamboman/mason-lspconfig.nvim',
             'nvim-telescope/telescope.nvim',
+            --[[
             -- Ensure nvim-java is setup prior to this
             'nvim-java/nvim-java',
+            ]]--
         },
         opts = {
             setup = {
