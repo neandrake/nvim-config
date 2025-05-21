@@ -332,9 +332,6 @@ return {
                     lsp_zero.default_setup,
                 },
             })
-
-            local lspconfig = require('lspconfig')
-            lspconfig.jdtls.setup({})
         end,
     },
 }
