@@ -2,7 +2,7 @@
 
 return {
     'akinsho/bufferline.nvim',
-    --version = 'v4.5.*',
+    --version = 'v4.9.*',
     dependencies = {
         'nvim-tree/nvim-web-devicons',
     },

@@ -5,7 +5,7 @@ return {
     -- Rust: simplifies the configuration for an enriched LSP/DAP experience.
     {
         'mrcjkb/rustaceanvim',
-        version = '^4',
+        version = '^6',
         lazy = false, -- The plugin itself manages being lazy
     },
 
@@ -38,43 +38,13 @@ return {
             java.setup()
         end,
     },
-    ]]--
+    ]] --
 
     -- ## Below are the core plugins used for managing LSP configs, LSP servers, and auto-complete ## --
-
-    -- This is for easy LSP configuration functionality/utilities, and is used
-    -- by both auto-completion and LSP, so defined here as a primary plugin
-    -- to be installed. This is configured to essentially not trigger automatic
-    -- setup like most plugins, and allow the auto-complete and LSP configurations
-    -- to manage this instead.
-    {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = "v3.x",
-        lazy = true,
-        config = false,
-        init = function()
-            -- Disable automatic setup.
-            vim.g.lsp_zero_extend_cmp = 0
-            vim.g.lsp_zero_extend_lspconfig = 0
-        end,
-    },
-
-    -- Mason is a plugin for easily managing installations of LSP servers on the
-    -- system. This is configured below to use nvim-lspconfig for providing it
-    -- "registry" of LSP implementations that could be installed. Here Mason needs
-    -- configured to eagerly initialize so it occurs before mason-lspconfig that
-    -- is set up below as part of nvim-lspconfig. See also :h mason-lspconfig-quickstart.
-    {
-        'williamboman/mason.nvim',
-        lazy = false,
-        config = true,
-    },
 
     -- Autocompletion
     -- nvim-cmp: Lua implementation of auto-completion. Uses the concept of sources
     --           or engines for providing the results.
-    --           This also uses lsp-zero which provides an engine/source from an
-    --           LSP connected with the current buffer.
     {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
@@ -93,12 +63,9 @@ return {
             'onsails/lspkind.nvim', -- Fancy icons.
         },
         config = function()
-            local lsp_zero = require('lsp-zero')
             local cmp = require('cmp')
             local lspkind = require('lspkind')
             local types = require('cmp.types')
-
-            lsp_zero.extend_cmp()
 
             -- Sort Text last, Snippets second-last. Based on `cmp.config.compare.kind`.
             local sortby_kind = function(entry1, entry2)
@@ -189,14 +156,15 @@ return {
                     {
                         name = 'luasnip',
                         group_index = 2,
-                        max_item_count = 5,
                     },
                     {
                         name = 'buffer',
                         group_index = 3,
-                        max_item_count = 5,
                     },
                 }),
+                performance = {
+                    max_view_entries = 5,
+                },
                 view = {
                     -- Use the default popup menu, but ensure the highest-scoring item
                     -- is near the cursor. The menu expands down by default but may
@@ -252,22 +220,31 @@ return {
 
     -- LSP
     -- nvim-lspconfig: Configurations for connecting to commong LSP server implementations.
-    -- lsp-zero: Functions/utils to simplify configuring NeoVim's LSP client and nvim-lspconfig.
     -- mason-lspconfig: The Mason plugin modules, simple install/management of LSP servers on the system.
     --                  The core Mason plugin is installed above but this module is specific to using
     --                  nvim-lspconfig's set of known LSP implementations to be managed.
+
+    -- Mason is a plugin for easily managing installations of LSP servers on the
+    -- system. This is configured below to use nvim-lspconfig for providing it
+    -- "registry" of LSP implementations that could be installed. Here Mason needs
+    -- configured to eagerly initialize so it occurs before mason-lspconfig that
+    -- is set up below as part of nvim-lspconfig. See also :h mason-lspconfig-quickstart.
+    {
+        'williamboman/mason.nvim',
+        lazy = false,
+        config = true,
+    },
+
     {
         'neovim/nvim-lspconfig',
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
-            'VonHeikemen/lsp-zero.nvim',
-            'williamboman/mason-lspconfig.nvim',
             'nvim-telescope/telescope.nvim',
             --[[
             -- Ensure nvim-java is setup prior to this
             'nvim-java/nvim-java',
-            ]]--
+            ]] --
         },
         opts = {
             setup = {
@@ -278,60 +255,59 @@ return {
             },
         },
         config = function()
-            local lsp_zero = require('lsp-zero')
+            vim.lsp.config('*', {
+                on_attach = function(client, bufnr)
+                    local opts = { buffer = bufnr, remap = false }
 
-            -- Set signs as first thing otherwise they won't take effect immediately.
-            lsp_zero.set_sign_icons({
-                error = '✘',
-                warn = '▲',
-                hint = '⚑',
-                info = '»'
-            })
+                    local telescope = require('telescope.builtin')
 
-            lsp_zero.extend_lspconfig()
-
-            lsp_zero.on_attach(function(_, bufnr)
-                local opts = { buffer = bufnr, remap = false }
-
-                local telescope = require('telescope.builtin')
-
-                vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-                vim.keymap.set("n", "ge", function() vim.lsp.buf.declaration() end, opts)
-                vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
-                vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
-                vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-                vim.keymap.set("n", "L", function() vim.diagnostic.open_float() end, opts)
-                vim.keymap.set("n", "<leader>pt", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
-                vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
-                vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-                vim.keymap.set("n", "<leader>gr", function() vim.lsp.buf.references() end, opts)
-                vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-                vim.keymap.set("n", "<leader>cn", function() vim.lsp.buf.rename() end, opts)
-                vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format() end, opts)
-                vim.keymap.set("v", "<leader>cf", function()
-                    -- This requires the LSP to support range format, which not all do.
-                    -- Consider hooking up stevearc/conform.nvim which includes other benefits.
-                    local range = {
-                        ['start'] = vim.fn.getpos('v'),
-                        ['end'] = vim.fn.getpos('.')
-                    }
-                    vim.lsp.buf.format({ range = range })
-                end, opts)
-                vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-            end)
-
-            local mason_lsp = require('mason-lspconfig')
-            mason_lsp.setup({
-                ensure_installed = {},
-                setup_handlers = {
-                    -- Disable automatic setup and configuration of rust-analyzer. That will be set up
-                    -- and managed by the rustaceanvim plugin.
-                    ['rust_analyzer'] = function() end,
-                },
-                handlers = {
-                    lsp_zero.default_setup,
-                },
+                    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+                    vim.keymap.set("n", "ge", function() vim.lsp.buf.declaration() end, opts)
+                    vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+                    vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
+                    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+                    vim.keymap.set("n", "L", function() vim.diagnostic.open_float() end, opts)
+                    vim.keymap.set("n", "<leader>pt", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
+                    vim.keymap.set("n", "]d", function() vim.diagnostic.jump({count = 1, float = true}) end, opts)
+                    vim.keymap.set("n", "[d", function() vim.diagnostic.jump({count = -1, float = true}) end, opts)
+                    vim.keymap.set("n", "<leader>gr", function() vim.lsp.buf.references() end, opts)
+                    vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+                    vim.keymap.set("n", "<leader>cn", function() vim.lsp.buf.rename() end, opts)
+                    vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format() end, opts)
+                    vim.keymap.set("v", "<leader>cf", function()
+                        -- This requires the LSP to support range format, which not all do.
+                        -- Consider hooking up stevearc/conform.nvim which includes other benefits.
+                        local range = {
+                            ['start'] = vim.fn.getpos('v'),
+                            ['end'] = vim.fn.getpos('.')
+                        }
+                        vim.lsp.buf.format({ range = range })
+                    end, opts)
+                    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+                end
             })
         end,
+    },
+
+    {
+        'williamboman/mason-lspconfig.nvim',
+
+        dependencies = {
+            { 'mason-org/mason.nvim', opts = {} },
+            'neovim/nvim-lspconfig',
+        },
+
+        opts = {
+            -- Disable automatic setup and configuration of rust-analyzer. That will be set up
+            -- and managed by the rustaceanvim plugin.
+            automatic_enable = {
+                exclude = {
+                    'rust_analyzer',
+                    'java',
+                }
+            },
+            -- Require being explicit for installing LSPs on the system.
+            ensure_installed = {},
+        },
     },
 }

@@ -52,6 +52,9 @@ vim.opt.colorcolumn = "80"
 
 vim.g.mapleader = " "
 
+-- Rounded borders in floating windows.
+vim.opt.winborder = 'rounded'
+
 -- Integrate yank/delete/change/put with the system clipboard
 vim.opt.clipboard = "unnamedplus"
 
@@ -64,14 +67,28 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.sessionoptions = "buffers,folds,tabpages,winpos,winsize"
 
 vim.diagnostic.config({
-    -- Disable showing diagnostics as virtual text directly in the buffer.
-    virtual_text = false,
+    -- Opt-in enable diagnostics in virtual line but only for the current line.
+    -- Alternatively use virtual_text to have diagnostics appear as virtual text
+    -- instead of virtual lines.
+    virtual_text = {
+        current_line = true,
+    },
+
     -- Show higher severity issues over lower-severity ones.
     severity_sort = true,
 
     -- Configuration for the floating window showing diagnostics.
     float = {
         severity_sort = true,
+    },
+
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '✘',
+            [vim.diagnostic.severity.WARN] = '▲',
+            [vim.diagnostic.severity.INFO] = '»',
+            [vim.diagnostic.severity.HINT] = '⚑',
+        }
     },
 })
 
