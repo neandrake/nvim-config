@@ -230,7 +230,7 @@ return {
     -- configured to eagerly initialize so it occurs before mason-lspconfig that
     -- is set up below as part of nvim-lspconfig. See also :h mason-lspconfig-quickstart.
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         lazy = false,
         config = true,
     },
@@ -290,7 +290,7 @@ return {
     },
 
     {
-        'williamboman/mason-lspconfig.nvim',
+        'mason-org/mason-lspconfig.nvim',
 
         dependencies = {
             { 'mason-org/mason.nvim', opts = {} },
