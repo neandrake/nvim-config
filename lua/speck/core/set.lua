@@ -100,3 +100,37 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
+
+-- Custom keys for LSP.
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('speck.lsp', {}),
+    callback = function(args)
+        local opts = { buffer = 0, remap = false }
+
+        local telescope = require('telescope.builtin')
+
+        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+        vim.keymap.set("n", "ge", function() vim.lsp.buf.declaration() end, opts)
+        vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+        vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
+        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+        vim.keymap.set("n", "L", function() vim.diagnostic.open_float() end, opts)
+        vim.keymap.set("n", "<leader>pt", function() telescope.lsp_dynamic_workspace_symbols() end, opts)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+        vim.keymap.set("n", "<leader>gr", function() vim.lsp.buf.references() end, opts)
+        vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+        vim.keymap.set("n", "<leader>cn", function() vim.lsp.buf.rename() end, opts)
+        vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format() end, opts)
+        vim.keymap.set("v", "<leader>cf", function()
+            -- This requires the LSP to support range format, which not all do.
+            -- Consider hooking up stevearc/conform.nvim which includes other benefits.
+            local range = {
+                ['start'] = vim.fn.getpos('v'),
+                ['end'] = vim.fn.getpos('.')
+            }
+            vim.lsp.buf.format({ range = range })
+        end, opts)
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    end,
+})
