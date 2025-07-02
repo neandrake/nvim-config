@@ -163,7 +163,7 @@ return {
                     },
                 }),
                 performance = {
-                    max_view_entries = 5,
+                    -- max_view_entries = 5,
                 },
                 view = {
                     -- Use the default popup menu, but ensure the highest-scoring item
