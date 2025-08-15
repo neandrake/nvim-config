@@ -9,7 +9,7 @@ return {
                 window = {
                     border = "single",
                     align = "top",
-                    --winblend = 0,
+                    winblend = 0,
                     x_padding = 1,
                     y_padding = 1,
                 },
