@@ -191,8 +191,13 @@ return {
             pattern = "PersistedStart",
             group = persisted_hook_group,
             callback = function()
-                open_nvimtree()
-                focus_main_window()
+                -- Schedule the default state. The LoadPre/LoadPost events are
+                -- invoked via vim.schedule, and this must happen after those fire.
+                -- https://github.com/olimorris/persisted.nvim/pull/178
+                vim.schedule(function()
+                    open_nvimtree()
+                    focus_main_window()
+                end)
             end,
         })
 
