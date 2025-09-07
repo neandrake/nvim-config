@@ -34,9 +34,25 @@ return {
 
         config = function()
             local java = require('java')
-            java.setup()
+            java.setup({
+                -- Specify newer java_test than what the default has, otherwise this will
+                -- constantly conflict with doing latest updates with Mason.
+                -- NOTE: This seems to be required by some other means, as trying to disable
+                --       will not prevent it from being auto-installed.
+                java_test = {
+                    enable = true,
+                    version = '0.43.1',
+                },
+                -- Similarly, the version of spring_boot_tools specified by nvim-java is
+                -- old and will conflict with latest updates from Mason, but this isn't
+                -- needed by any projects I develop.
+                spring_boot_tools = {
+                    enable = false,
+                }
+            })
             local lspconfig = require('lspconfig')
-            lspconfig.jdtls.setup({})
+            lspconfig.jdtls.setup({
+            })
         end,
     },
 
