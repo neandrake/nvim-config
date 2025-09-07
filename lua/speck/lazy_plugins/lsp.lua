@@ -9,7 +9,6 @@ return {
         lazy = false, -- The plugin itself manages being lazy
     },
 
-    --[[
     -- Java: simplifies the configuration for an enriched LSP/DAP experience.
     {
         'nvim-java/nvim-java',
@@ -36,9 +35,10 @@ return {
         config = function()
             local java = require('java')
             java.setup()
+            local lspconfig = require('lspconfig')
+            lspconfig.jdtls.setup({})
         end,
     },
-    ]] --
 
     -- ## Below are the core plugins used for managing LSP configs, LSP servers, and auto-complete ## --
 
@@ -267,7 +267,6 @@ return {
             automatic_enable = {
                 exclude = {
                     'rust_analyzer',
-                    'java',
                 }
             },
             -- Require being explicit for installing LSPs on the system.
