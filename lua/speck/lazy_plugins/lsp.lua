@@ -1,6 +1,4 @@
 -- Management of both LSP servers and auto-completion.
--- The "root" or main plugin for managing these are nvim-cmp for auto-complete
--- and nvim-lspconfig for LSP. Each have additional dependencies which
 return {
     -- Rust: simplifies the configuration for an enriched LSP/DAP experience.
     {
@@ -50,9 +48,9 @@ return {
                     enable = false,
                 }
             })
-            local lspconfig = require('lspconfig')
-            lspconfig.jdtls.setup({
-            })
+
+            require('lspconfig').jdtls.setup({})
+            --vim.lsp.enable('jdtls')
         end,
     },
 
@@ -235,16 +233,7 @@ return {
     },
 
     -- LSP
-    -- nvim-lspconfig: Configurations for connecting to commong LSP server implementations.
-    -- mason-lspconfig: The Mason plugin modules, simple install/management of LSP servers on the system.
-    --                  The core Mason plugin is installed above but this module is specific to using
-    --                  nvim-lspconfig's set of known LSP implementations to be managed.
 
-    -- Mason is a plugin for easily managing installations of LSP servers on the
-    -- system. This is configured below to use nvim-lspconfig for providing it
-    -- "registry" of LSP implementations that could be installed. Here Mason needs
-    -- configured to eagerly initialize so it occurs before mason-lspconfig that
-    -- is set up below as part of nvim-lspconfig. See also :h mason-lspconfig-quickstart.
     {
         'mason-org/mason.nvim',
         lazy = false,
