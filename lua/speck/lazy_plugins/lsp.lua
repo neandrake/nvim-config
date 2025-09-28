@@ -31,6 +31,7 @@ return {
         },
 
         config = function()
+            --[[
             local java = require('java')
             java.setup({
                 -- Specify newer java_test than what the default has, otherwise this will
@@ -51,6 +52,7 @@ return {
 
             require('lspconfig').jdtls.setup({})
             --vim.lsp.enable('jdtls')
+            ]]--
         end,
     },
 
