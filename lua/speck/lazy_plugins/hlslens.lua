@@ -8,8 +8,9 @@ return {
     },
 
     config = function()
-        require('scrollbar.handlers.search').setup({
+        require('hlslens').setup({
             auto_enable = true,
+            enable_incsearch = true,
             calm_down = true,
         })
 
