@@ -25,22 +25,8 @@ return {
                 -- Make the popup diff window not transparent at all.
                 winblend = 0,
             },
-
-            keymaps = {
-                ["j"] = "move_next",
-                ["k"] = "move_prev",
-                ["gj"] = "move2parent",
-                ["J"] = "move_change_next",
-                ["K"] = "move_change_prev",
-                ["<cr>"] = "action_enter",
-                ["p"] = "enter_diffbuf", -- this can switch between preview and undotree window
-                ["q"] = "quit",
-                ["S"] = "update_undotree_view",
-            },
         })
-    end,
 
-    keys = {
-        { '<leader>u', '<cmd>lua require("undotree").toggle()<cr>' },
-    },
+        vim.keymap.set("n", "<leader>u", undotree.toggle, { noremap = true, silent = true, })
+    end,
 }
