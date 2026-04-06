@@ -2,8 +2,29 @@ return {
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
+    keys = {
+        {
+            "<leader>ld",
+            function()
+                if Snacks.dim.enabled then Snacks.dim.disable() else Snacks.dim.enable() end
+            end,
+            desc = "Toggle scoped dimmer"
+        },
+    },
     opts = {
-        -- LSP highlight of what's under cursor
+        -- Dim everything outside of the cursor's scope.
+        dim = {
+            enabled = true,
+            animate = { enabled = false },
+        },
+
+        -- Show indentation guides.
+        indent = {
+            enabled = true,
+            animate = { enabled = false },
+        },
+
+        -- LSP highlight of what's under cursor.
         words = {
             enabled = true,
             debounce = 100,
