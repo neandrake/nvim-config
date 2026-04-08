@@ -12,16 +12,14 @@ return {
                     winblend = 0,
                     x_padding = 1,
                     y_padding = 1,
+
+                    avoid = {
+                        "NvimTree",
+                    },
                 },
 
                 view = {
                     stack_upwards = false,
-                },
-            },
-
-            integration = {
-                ["nvim-tree"] = {
-                    enable = true,
                 },
             },
         })

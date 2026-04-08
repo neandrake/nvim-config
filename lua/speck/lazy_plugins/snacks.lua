@@ -24,6 +24,11 @@ return {
             animate = { enabled = false },
         },
 
+        -- Tree-sitter based scope detection.
+        scope = {
+            enabled = true,
+        },
+
         -- LSP highlight of what's under cursor.
         words = {
             enabled = true,
