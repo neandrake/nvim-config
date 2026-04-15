@@ -40,10 +40,4 @@ return {
 
     -- Icons for LSP related context.
     { 'onsails/lspkind.nvim' },
-
-    -- Treesitter context, to always show what scope you're in.
-    {
-        'nvim-treesitter/nvim-treesitter-context',
-        dependencies = { 'nvim-treesitter/nvim-treesitter' }
-    },
 }
