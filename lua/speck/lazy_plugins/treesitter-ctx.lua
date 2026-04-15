@@ -4,6 +4,10 @@
 return {
     'nvim-treesitter/nvim-treesitter-context',
 
+    dependencies = {
+        'nvim-treesitter/nvim-treesitter',
+    },
+
     config = function()
         -- Displays the scope/context (functions, classes, etc.) at the top of the
         -- buffer, for the current cursor location.
