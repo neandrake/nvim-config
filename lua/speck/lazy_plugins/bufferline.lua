@@ -17,7 +17,7 @@ return {
                     style = 'icon',
                 },
                 buffer_close_icon = '',
-                close_command = Snacks.bufdelete,
+                close_command = function(buf) Snacks.bufdelete(buf) end,
 
                 -- Offsets the buffer tabs to not span across the NvimTree sidebar.
                 -- Note the nested object structure here. The documentation in `:help bufferline-offset`
@@ -34,6 +34,7 @@ return {
         -- Switch buffer, close current buffer
         vim.keymap.set("n", "<leader>bb", function() bufline.pick() end)
         vim.keymap.set("n", "<leader>bw", function() Snacks.bufdelete(0) end)
+        vim.keymap.set("n", "<leader>bi", function() Snacks.bufdelete.invisible() end)
         vim.keymap.set("n", "<leader>bc", function() bufline.close_with_pick() end)
     end,
 }
