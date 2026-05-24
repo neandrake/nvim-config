@@ -9,7 +9,6 @@ return {
 
     config = function()
         local bufline = require('bufferline')
-        local bufdel = require('bufdelete')
         bufline.setup({
             options = {
                 mode = 'buffers',
@@ -18,7 +17,7 @@ return {
                     style = 'icon',
                 },
                 buffer_close_icon = '',
-                close_command = bufdel.bufdelete,
+                close_command = Snacks.bufdelete,
 
                 -- Offsets the buffer tabs to not span across the NvimTree sidebar.
                 -- Note the nested object structure here. The documentation in `:help bufferline-offset`
@@ -34,7 +33,7 @@ return {
 
         -- Switch buffer, close current buffer
         vim.keymap.set("n", "<leader>bb", function() bufline.pick() end)
-        vim.keymap.set("n", "<leader>bw", function() bufdel.bufdelete(0) end)
+        vim.keymap.set("n", "<leader>bw", function() Snacks.bufdelete(0) end)
         vim.keymap.set("n", "<leader>bc", function() bufline.close_with_pick() end)
     end,
 }
