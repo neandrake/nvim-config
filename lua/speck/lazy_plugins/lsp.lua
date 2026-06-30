@@ -3,7 +3,7 @@ return {
     -- Rust: simplifies the configuration for an enriched LSP/DAP experience.
     {
         'mrcjkb/rustaceanvim',
-        version = '^8',
+        version = '^9',
         lazy = false, -- The plugin itself manages being lazy
     },
 
