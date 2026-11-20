@@ -28,7 +28,7 @@ return {
                 selection_strategy = 'closest',
                 -- Don't suggest binary files
                 file_ignore_patterns = {
-                    '/build', '/bin/', '/e%-bin/', '/lib/',
+                    '/build', '/bin/', '/e%-bin/', '/lib/', '/target/',
                     '%.zip$', '%.tgz$', '%.gz$',
                     '%.jpeg$', '%.jpg$', '%.png$', '%.bmp$', '%.ico$', '%.gif$',
                     '%.jar$', '%.dll$', '%.so', '%.dylib',
