@@ -9,6 +9,7 @@ return {
         vim.g.scrollbar_v2_notice = false
         require('scrollbar').setup({
             set_highlights = true,
+            --[[ -- Unclear how to properly reference gruvbox values here...
             scrollbar = {
                 thumb = {
                     highlight = { bg = "WildMenu" },
@@ -22,6 +23,7 @@ return {
                 Hint = { highlight = { fg = "DiagnosticHint" } },
                 Misc = { highlight = { fg = "GruvboxPurple" } },
             }
+            ]]--
         })
     end,
 }
